@@ -1,0 +1,68 @@
+
+#include <osa_cmem.h>
+
+Uint8 *OSA_cmemAlloc(Uint32 size, Uint32 alignment)
+{
+  //add by lujun
+  static Uint32 sizeSum = 0;
+
+  CMEM_AllocParams  prm;
+  
+  prm.type = CMEM_HEAP;
+  prm.flags = CMEM_NONCACHED;
+  prm.alignment = alignment;
+  
+  sizeSum += size;
+	//printf("[cmem_alloc] total size:%d\n", sizeSum);
+  return (Uint8*)CMEM_alloc(size, &prm);
+}
+
+int OSA_cmemFree(Uint8 *ptr)
+{
+  CMEM_AllocParams  prm;
+  
+  if(ptr==NULL)
+    return OSA_EFAIL;
+    
+  prm.type = CMEM_HEAP;
+  prm.flags = 0;
+  prm.alignment = 0;
+
+  return CMEM_free(ptr, &prm);
+}
+
+Uint8* OSA_cmemGetPhysAddr(Uint8 *virtAddr)
+{
+  if(virtAddr==NULL)
+    return NULL;
+    
+  return (Uint8*)CMEM_getPhys(virtAddr);
+}
+
+int OSA_cmemTestMain(int argc, char **argv)
+{ 
+  Uint32 size;
+  Uint8 *virtAddr, *physAddr;
+    
+  CMEM_init();
+
+  if(argc < 3) {
+    OSA_printf(" USAGE : %s cmem <size>\n", argv[0]);
+    return 0;
+  }
+  
+  size = atoi(argv[2]);
+
+  virtAddr = OSA_cmemAlloc(size, 32);
+    
+  physAddr = OSA_cmemGetPhysAddr(virtAddr);
+  
+  printf("VIRT=0x%08x PHYS=0x%08x SIZE=%d\n", (Uint32)virtAddr, (Uint32)physAddr, size);
+  
+  OSA_cmemFree(virtAddr);
+ 
+  CMEM_exit();
+
+  return 0;
+}
+

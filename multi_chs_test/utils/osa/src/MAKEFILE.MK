@@ -1,0 +1,3 @@
+include $(BASE_DIR)/COMMON_HEADER.MK
+
+include $(BASE_DIR)/COMMON_FOOTER.MK

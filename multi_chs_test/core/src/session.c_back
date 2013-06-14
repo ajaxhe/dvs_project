@@ -1,0 +1,6 @@
+#include "session.h"
+
+void* sessionThrFxn(void *arg)
+{
+	printf("In %s\n", __func__);
+}

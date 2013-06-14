@@ -1,0 +1,9 @@
+# Compiled source #
+###################
+*.dll
+*.exe
+*.o
+*.a
+*.so
+*.obj
+*.out
