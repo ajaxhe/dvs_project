@@ -9,10 +9,11 @@
 
 #include <unistd.h>
 
-#define NUM_OF_THREADS 3
+#define NUM_OF_THREADS 4
 #define ORTP_SESSION_THR 0
 #define VIDEO_ENCODE_THR 1
 #define AUDIO_ENCODE_THR 2
+#define ALARM_INPUT_THR 3
 
 ExitState g_exitState;
 GlobalData gbl = {0};
@@ -104,6 +105,13 @@ int start_all_threads()
 		printf("audio encode pthread_create fail!\n");
 		return -1; 
 	} 
+
+	// create alarm input thread
+	if ( OSA_thrCreate(&g_threadMgr.hThread[ALARM_INPUT_THR], alarmInputThrFxn, OSA_THR_PRI_DEFAULT,OSA_THR_STACK_SIZE_DEFAULT,&g_threadMgr.threadEnv) )
+	{   
+		printf("alarm input thread create failed\n");  
+		return  -1; 
+	}  
 
 	return 0;
 }

@@ -169,3 +169,37 @@ int clean_tcp_listen_thread()
 
     return 0;
 }
+
+void* alarmInputThrFxn(void* arg)
+{
+	ThreadEnv *envp = (ThreadEnv*)arg;
+	Rendezvous_meet(&envp->rendezvousInit);
+	printf("[Alarm-input] Start\n");
+
+	AlarmStatePack alarmPack;
+	memcpy(alarmPack.cmdHeader, ALARM_HEADER_STR, TCP_CMD_HEADER_LEN);
+
+	int i, chs, alarm_count;
+	chs = gblGetVideoChannels();
+	alarm_count = 0;
+
+	while (!gblGetQuit())
+	{
+		alarmPack.number = rand() % chs;
+		alarmPack.state = rand() % 2;
+
+		//sent the alarm pack to client who connect to the server
+		for(i=0; i < g_serverEnp.m_clientCount; i++)
+		{
+			ClientEnv *pClient = &g_serverEnp.m_Client[i];
+			if (pClient->m_Index >= 0)
+			{
+				send(pClient->m_Socket, (uint8_t *)&alarmPack, RETURN_PACK_LEN, 0 ) ;
+				printf("[Alarm-input] alarm count: %d, chId:%d, state:%d\n", alarm_count, alarmPack.number, alarmPack.state);
+			}
+		}
+		alarm_count++;
+
+		sleep(10);
+	}
+}
