@@ -31,6 +31,9 @@ typedef struct _threadEnv
 
 }ThreadEnv;
 
+#define LOCAL_TCP_PORT 9090
+#define UART_LOCAL_TCP_PORT 9092
+
 /* system config file path*/
 #define SYS_CONFIG_FILE      "./board.cfg"
 

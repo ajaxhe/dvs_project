@@ -6,6 +6,7 @@
 
 #include "server.h"
 #include "osa_thr.h"
+#include "uart_server.h"
 
 #include <unistd.h>
 
@@ -17,7 +18,6 @@
 
 ExitState g_exitState;
 GlobalData gbl = {0};
-
 
 typedef struct _threadMgr
 {
@@ -47,7 +47,13 @@ int main()
 	// tcp listen thread create
 	if (tcp_listen_thread_start(LOCAL_TCP_PORT) != 0)
 	{
-		printf("open tcp listen thread failed!\n");
+		printf("[main] open tcp listen thread failed!\n");
+		return -1;
+	}
+	// uart tcp listen thread create
+	if (uart_tcp_listen_thread_start(UART_LOCAL_TCP_PORT) != 0)
+	{
+		printf("[main] open uart tcp listen thread failed!\n");
 		return -1;
 	}
 
@@ -73,6 +79,10 @@ int main()
 
 	// close tcp listen thread
 	clean_tcp_listen_thread();
+
+	// close uart tcp listen thread
+	clean_uart_tcp_listen_thread();
+	
 
 	return gblGetExitState();
 }

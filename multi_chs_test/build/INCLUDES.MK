@@ -11,6 +11,7 @@ OSA_DIR    = $(UTILS_DIR)/osa
 ORTP_DIR   = $(UTILS_DIR)/ortp
 COM_DIR    = $(UTILS_DIR)/com
 NETWORK_DIR = $(BASE_DIR)/../network
+UART_DIR   = $(BASE_DIR)/../uart
 
 # all of the inc dir
 
@@ -19,7 +20,7 @@ OSA_INC     = -I$(OSA_DIR)/inc
 COM_INC     = -I$(COM_DIR)/inc
 ORTP_INC    = -I$(ORTP_DIR)/inc 
 NETWORK_INC = -I$(NETWORK_DIR)/inc
+UART_INC    = -I$(UART_DIR)/inc
 
 
 endif # ifndef $(INCLUDES_MK)
-

@@ -15,6 +15,7 @@ libs:
 	make -fMAKEFILE.MK -C$(ORTP_DIR)/src MODULE=ortp $(TARGET)
 	make -fMAKEFILE.MK -C$(APP_DIR)/src MODULE=app $(TARGET)
 	make -fMAKEFILE.MK -C$(NETWORK_DIR)/src MODULE=network $(TARGET)
+	make -fMAKEFILE.MK -C$(UART_DIR)/src MODULE=uart $(TARGET)
 all:
 	make clean
 	make exe
@@ -36,6 +37,6 @@ ar_all:
 
 install:
 	make libs TARGET=install 
-	sudo cp $(EXE_BASE_DIR)/* $(TARGET_FS_DIR)
+	cp $(EXE_BASE_DIR)/* $(TARGET_FS_DIR)
 	
 .PHONY : install clean depend all app 
