@@ -133,7 +133,10 @@ void stop_all_threads()
 	int i;
 	for (i = 0; i < NUM_OF_THREADS; i++)
 	{
-		OSA_thrJoin(&g_threadMgr.hThread[i]);
+		if (i == ALARM_INPUT_THR)
+			OSA_thrDelete(&g_threadMgr.hThread[i]);
+		else
+			OSA_thrJoin(&g_threadMgr.hThread[i]);
 		printf("[main] join threads: %d\n", i);
 	}
 }

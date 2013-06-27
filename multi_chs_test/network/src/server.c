@@ -179,7 +179,7 @@ void* alarmInputThrFxn(void* arg)
 	AlarmStatePack alarmPack;
 	memcpy(alarmPack.cmdHeader, ALARM_HEADER_STR, TCP_CMD_HEADER_LEN);
 
-	int i, chs, alarm_count;
+	int i, chs, alarm_count, sleep_time;
 	chs = gblGetVideoChannels();
 	alarm_count = 0;
 
@@ -200,6 +200,7 @@ void* alarmInputThrFxn(void* arg)
 		}
 		alarm_count++;
 
-		sleep(10);
+		sleep_time = 30 + rand() % 100;
+		sleep(sleep_time);
 	}
 }
